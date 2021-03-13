@@ -1,16 +1,23 @@
-# scale (examples: c (Cminor), a, A#, Bb, etc.)
+# scale (examples: c (Cminor), a, A#, Bb, etc., or 'chromatic', for every possible note)
 C
 # other_scales (put the degree of the scale which will be used, e.g. V for the dominant scale in major, IV for the subdominant in major, vi for the relative minor, III for the relative major, 0 for no other scale)
 0
-# first_degree
+# scales_balance (balance between main scale and the other. If balance is 50, main scale will represent about 50% of the notes, and the other 50% will be splitted equally between the other scales, e.g. 25/25 if they are two other scales)
+50
+# first_degree (if it doesn't matter, just put 0)
 I III V
 # last_degrees (if any degree, just put a 0. You can put as many degrees as you want: IV,V,I for instance)
 V,I V,V VII,I II,I
 # number (number of notes played)
+10
+# duration (whole = 4, eighth = 0.5, etc.)
+2
 # tessitura
-C3 C6
+C-3 C-6
+# interval_priority (the first interval has a greater chance to be played than the last one)
+2 3 5 4 6 1 8 7
 # degrees (if a degree lacks, it will never be played)
-## I (intervals possible from this degree, including altered note, if other_scales is set
+## I (intervals possible from this degree, including altered note, if other_scales is set)
 1 2 3 4 5 6 7 8
 ## II
 1 2 3 4 5 6 7
@@ -19,7 +26,7 @@ C3 C6
 ## IV
 1 2 3 4 5 6 7
 ## V
-1 2 3 4 5 6 7
+1 2 3 4 5 6 7 8
 ## VI
 1 2 3 4 5 6 7
 ## VII
