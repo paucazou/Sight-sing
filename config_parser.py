@@ -9,6 +9,15 @@ class Config(dict):
         super(Config, self).__init__(*args, **kwargs)
         self.__dict__ = self
 
+    def wash(self):
+        """Deletes values that are empty"""
+        for k,v in tuple(self.items()):
+            if isinstance(v,Config):
+                v.wash()
+            if v is None or len(v) == 0:
+                del(self[k])
+
+
 class ConfigParser:
     def __init__(self,raw):
         self.raw = raw
