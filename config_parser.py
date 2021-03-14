@@ -48,7 +48,7 @@ class ConfigParser:
                 name = line[1]
             elif "#" in line[0]:
                 #lower level
-                return data
+                return Config(data)
         return Config(data)
 
     def _fill(self):
