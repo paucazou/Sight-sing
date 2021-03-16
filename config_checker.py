@@ -22,6 +22,7 @@ class ConfigModifier:
             self.cmd_config.wash()
             self.final_config.update(self.cmd_config)
 
+
     def __call__(self):
         self._update_file_config_with_cmd_config()
 

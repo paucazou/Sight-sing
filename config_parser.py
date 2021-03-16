@@ -14,6 +14,8 @@ class Config(dict):
         for k,v in tuple(self.items()):
             if isinstance(v,Config):
                 v.wash()
+            if isinstance(v,int):
+                continue
             if v is None or len(v) == 0:
                 del(self[k])
 
