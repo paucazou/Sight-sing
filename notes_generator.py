@@ -27,6 +27,12 @@ class Node:
     def __hash__(self):
         return hash((self.note.octave,self.note.name,self.child))
 
+    def __iter__(self):
+        yield self.note
+        if self.child is not None:
+            yield from self.child
+
+
 class NotesGenerator:
     """Generates a tree of nodes"""
     def __init__(self, selector, end):

@@ -5,9 +5,12 @@
 import argparse
 import config_parser
 import config_checker
-import notes_generator
-
+import mingus.containers as containers
 import mingus.core.scales as mcs
+import mingus.midi.midi_file_out as mmmfo
+import notes_generator
+import subprocess
+
 
 # arguments
 cmdparse = argparse.ArgumentParser(description="Creates a melody following user defined rules")
@@ -34,23 +37,50 @@ cmdparse.add_argument("--intervals","-i",nargs="*",help="Intervals possible.",ty
 cmdargs = cmdparse.parse_args()
 
 
-def main():
-    # parsing config
+def configer():
     with open ("config") as f:
         raw_config = f.read()
 
     parser = config_parser.ConfigParser(raw_config)
 
     config = config_checker.ConfigModifier(parser.data,config_parser.Config(cmdargs.__dict__))()
+    return config
 
-    # notes generation
-
+def gengenerator(config=configer()):
     selector = notes_generator.NotesSelector(config)
     generator = notes_generator.NotesGenerator(selector,selector.config.number)
     return generator
 
+def generate():
+    config = configer()
+    gen = gengenerator(config)
+    res = gen()
+    print(res)
+    track = containers.Track()
+    last_b = containers.Bar()
+
+    for note in res:
+        if not last_b.place_notes(note,config.duration):
+            track.add_bar(last_b)
+            last_b = containers.Bar()
+            last_b.place_notes(note,config.duration)
+
+    if len(last_b) > 0:
+        track.add_bar(last_b)
+
+    return track
+
+def main():
+    track = generate()
+    filename = "out.midi"
+    mmmfo.write_Track(filename,track)
+    subprocess.run(["musescore",filename])
+
+
+
+
 if __name__ == "__main__":
-    print(main()())
+    main()
 
 
 
