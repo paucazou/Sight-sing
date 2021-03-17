@@ -6,6 +6,13 @@ import mingus.containers.note as mcn
 
 DEGREES = "I II III IV V VI VII".split()
 
+def convert_degree(val):
+    """Convert val from numerical to roman numeral
+    or the opposite"""
+    values = {i+1:deg for i, deg in enumerate(DEGREES)}
+    values.update({deg:i+1 for i,deg in enumerate(DEGREES)})
+    return values[val]
+
 class ConfigModifier:
     """Modifies the configuration loaded:
     checks the command line first,
@@ -18,9 +25,20 @@ class ConfigModifier:
         """Updates file config with command line
         config"""
         self.final_config = self.file_config
+
         if self.cmd_config is not None:
             self.cmd_config.wash()
             self.final_config.update(self.cmd_config)
+
+        if "degrees_available" in self.cmd_config:
+            keys_to_remove = [deg for deg in self.final_config.degrees.keys() if convert_degree(deg) not in self.cmd_config.degrees_available]
+            for k in keys_to_remove:
+                del(self.final_config.degrees[k])
+                
+        if "intervals" in self.cmd_config:
+            # set intervals available
+            for deg in self.final_config.degrees.keys():
+                self.final_config.degrees[deg] = self.cmd_config.intervals
 
 
     def __call__(self):
@@ -51,9 +69,10 @@ class ConfigModifier:
             print(f"""Unisons and seconds are required for every degree. Degrees changed: {", ".join(changed)}""")
 
         # set degrees available
-        self.final_config.degrees_available = [
-                DEGREES.index(k) + 1 for k in self.final_config.degrees.keys()
-                ]
+        if "degrees_available" not in self.final_config:
+            self.final_config.degrees_available = [
+                    DEGREES.index(k) + 1 for k in self.final_config.degrees.keys()
+                    ]
 
         # add a convenient degrees alias with numerical values
         self.final_config.degrees_numeric = {

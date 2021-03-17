@@ -137,7 +137,7 @@ class NotesSelector:
         for itvl in intervals_available:
             res = mci.interval(self.tonic,note.name,itvl)
             # check degree
-            if self.find_degree(note) not in self.config.degrees_available:
+            if self.find_degree(res) not in self.config.degrees_available:
                 continue
             # find the correct octave
             new_note = mcn.Note(res,note.octave)
