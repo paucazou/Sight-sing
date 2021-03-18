@@ -242,21 +242,17 @@ class NotesSelector:
             if min(lengths) == max(lengths):
                 self.last_notes_found = [self.find_last_note(parent, notes,degrees,[]) for notes,degrees in zip(self.last_notes, self.last_degrees_possible)]
             # if not, select a scheme or a random note
-            elif random.randint(0,1) == 1:
+            elif random.randint(0,len(self.last_degrees_possible)) == 1:
                 # select scheme
                 # delete schemes that are now too short
-                for i, elt in enumerate(self.last_degrees_possible):
-                    if len(elt) != max(lengths):
-                        del(self.last_degrees_possible[i])
+                self.last_degrees_possible = [elt for elt in self.last_degrees_possible if len(elt) == max(lengths)]
                 self._generate_last_notes()
                 self.last_notes_found = [self.find_last_note(parent, notes,degrees,[]) for notes,degrees in zip(self.last_notes, self.last_degrees_possible)]
                 # if no scheme matches the rules, the end of the function will return a random note
 
             else:
                 # we need to delete schemes that are now too long
-                for i, elt in enumerate(self.last_degrees_possible):
-                    if len(elt) == max(lengths):
-                        del(self.last_degrees_possible[i])
+                self.last_degrees_possible = [elt for elt in self.last_degrees_possible if len(elt) != max(lengths)]
                 self._generate_last_notes()
 
             # delete lists that don't contain notes because no one is found

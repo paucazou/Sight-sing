@@ -7,7 +7,7 @@ C
 # first_degree (if it doesn't matter, just put 0)
 I III V
 # last_degrees (if any degree, just put a 0. You can put as many degrees as you want: IV,V,I for instance)
-V,I V,V VII,I II,I
+V,I V,V VII,I II,I IV,V,I II,V,I VI,V,I V,I,IV,III
 # number (number of notes played)
 10
 # duration (whole = 4, eighth = 0.5, etc.)
